@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Personal Web Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 10px;
+    background: linear-gradient(-45deg, #ff6ec4, #7873f5, #4ade80, #facc15);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+  }
+  @keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+  }
+  .profile-container {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    animation: fadeUp 1s ease;
+    padding-bottom: 30px;
+    position: relative;
+    display: none; /* Initially hidden, shown after loading */
+  }
+  @keyframes fadeUp {
+    from {opacity: 0; transform: translateY(40px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+  .cover-photo {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    animation: zoomIn 1.5s ease-in-out;
+  }
+  @keyframes zoomIn {
+    0% {transform: scale(1.1);}
+    100% {transform: scale(1);}
+  }
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    position: relative;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    animation: bounceIn 1.2s ease;
+  }
+  @keyframes bounceIn {
+    0% {transform: scale(0);}
+    70% {transform: scale(1.1);}
+    100% {transform: scale(1);}
+  }
+  .profile-info {
+    text-align: center;
+    padding: 0 20px 30px;
+    margin-top: -40px;
+  }
+  .profile-info h1 {
+    font-size: 32px;
+    font-weight: 900;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(90deg, #ff416c, #ff4b2b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-shadow: 1px 2px 6px rgba(255, 75, 43, 0.7);
+    animation: fadeInUp 1.3s ease forwards;
+  }
+  .profile-info p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ffd3c4;
+    letter-spacing: 2px;
+    font-family: 'Courier New', Courier, monospace;
+    text-shadow: 0 0 5px #ff6f61;
+    animation: fadeInUp 1.5s ease forwards;
+    min-height: 28px; /* To prevent jump */
+  }
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .info-box {
+    background: rgba(255,255,255,0.1);
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin: 20px;
+  }
+  .info-box p {
+    margin: 8px 0;
+    font-weight: 500;
+    font-size: 15px;
+    color: #fff;
+    transition: all 0.3s;
+  }
+  .info-box p:hover {
+    color: #ffeb3b;
+    transform: translateX(5px);
+  }
+  .info-box p span {
+    font-weight: bold;
+    color: #ff4081;
+  }
+  .social-links {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  .social-links a {
+    display: inline-block;
+    margin: 0 10px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 22px;
+    transition: transform 0.3s, color 0.3s;
+    padding: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+  }
+  .social-links a:hover {
+    transform: scale(1.2) rotate(8deg);
+    color: #00e676;
+    background: rgba(255,255,255,0.3);
+  }
+  .social-links a span {
+    font-size: 20px;
+  }
+  /* Stats buttons container */
+  .stats-container {
+    margin: 25px 30px 40px;
+    border-top: 2px solid;
+    border-image-slice: 1;
+    border-width: 2px 0 0 0;
+    border-image-source: linear-gradient(90deg, #ff4b2b, #ff416c);
+    display: flex;
+    justify-content: space-around;
+    padding-top: 20px;
+  }
+  /* Each stat button */
+  .stat-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+    position: relative;
+  }
+  .stat-btn:hover {
+    transform: scale(1.1);
+    color: #ff416c;
+    filter: drop-shadow(0 0 6px #ff416c);
+  }
+  /* Icon inside button */
+  .stat-btn img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 0 2px black);
+  }
+  /* Number count */
+  .stat-count {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  /* Modal background */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-bg.active {
+    display: flex;
+  }
+  /* Modal box */
+  .modal {
+    background: #222;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 320px;
+    max-width: 90%;
+    box-shadow: 0 0 15px #ff416c;
+    color: white;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .modal h2 {
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 22px;
+    text-align: center;
+    color: #ff416c;
+  }
+  .modal textarea {
+    width: 100%;
+    height: 90px;
+    resize: none;
+    border-radius: 8px;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .modal textarea:focus {
+    outline: none;
+    box-shadow: 0 0 8px #ff416c;
+  }
+  .modal .btns {
+    margin-top: 15px;
+    text-align: right;
+  }
+  .modal button {
+    background: #ff416c;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+  }
+  .modal button:hover {
+    background: #ff6b8a;
+  }
+  .modal .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: #ff416c;
+    cursor: pointer;
+  }
+
+  /* Loading screen */
+  #loader-wrapper {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+  }
+  .loader-ring {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    animation: rotate 1.8s linear infinite;
+  }
+  .loader-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #ff416c;
+    border-radius: 50%;
+    border-color: #ff416c transparent transparent transparent;
+    animation: ring-spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+  .loader-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .loader-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .loader-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes ring-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Typing effect text */
+  #typing-text {
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: .12em solid #ff416c;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #ffd3c4;
+    margin: 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loader-wrapper" role="alert" aria-live="assertive" aria-busy="true">
+  <div class="loader-ring" aria-hidden="true">
+    <div></div><div></div><div></div>
+  </div>
+  <p id="hacking-text" style="color:#ff416c; font-family: 'Courier New', Courier, monospace; font-weight: 700; margin-top: 20px; font-size: 20px;"></p>
+</div>
+
+<!-- Profile Container -->
+<div class="profile-container" tabindex="0" aria-label="User Profile Section">
+  <!-- Cover Photo -->
+  <img src="https://i.ibb.co/dwBrgcjj/Screenshot-2023-11-30-21-03-01-85-99c04817c0de5652397fc8b56c3b3817.jpg" alt="Cover Photo" class="cover-photo" />
+
+  <!-- Profile Picture -->
+  <img src="https://i.ibb.co/Z6S7r8XG/1000009571.jpg" alt="Profile Picture" class="profile-pic" />
+
+  <!-- Profile Info -->
+  <div class="profile-info">
+    <h1>MD SAJEEB KHAN</h1>
+    <p id="typing-text" aria-live="polite" aria-atomic="true"></p>
+  </div>
+
+  <!-- Additional Info -->
+  <div class="info-box">
+    <p><span>Email:</span> mdsajeeb200@gmail.com</p>
+    <p><span>Phone:</span> +8801600514535</p>
+    <p><span>Birthdate:</span> June 15, 2002</p>
+    <p><span>Education:</span> Minnot Ali Sorkari Pratthomik Biddaloy</p>
+    <p><span>Profession:</span> Web Developer & Designer</p>
+  </div>
+
+  <!-- Social Links -->
+  <div class="social-links">
+    <a href="https://www.facebook.com/share/1AsAeUXcVT/" target="_blank" title="Facebook" aria-label="Facebook Profile"><span>📱</span></a>
+    <a href="https://t.me/black_coder_444" target="_blank" title="Telegram" aria-label="Twitter Profile"><span>📞</span></a>
+    <a href="https://linkedin.com" target="_blank" title="LinkedIn" aria-label="LinkedIn Profile"><span>💼</span></a>
+    <a href="https://github.com" target="_blank" title="GitHub" aria-label="GitHub Profile"><span>🐙</span></a>
+  </div>
+
+  <!-- Stats Buttons with PNG icons -->
+  <div class="stats-container">
+    <button class="stat-btn" title="Total Views" id="views-btn" type="button" aria-label="Total Views">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/visible.png" alt="Views Icon" />
+      <span class="stat-count" id="views-count">25400</span>
+    </button>
+    <button class="stat-btn" title="Followers" id="followers-btn" type="button" aria-label="Followers">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/user-group-man-man.png" alt="Followers Icon" />
+      <span class="stat-count" id="followers-count">1200</span>
+    </button>
+    <button class="stat-btn" title="Messages" id="messages-btn" type="button" aria-label="Messages">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/sms.png" alt="Messages Icon" />
+      <span class="stat-count" id="messages-count">342</span>
+    </button>
+  </div>
+</div>
+
+<!-- Modal for message -->
+<div class="modal-bg" id="modal-bg" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <button class="close-btn" id="close-modal" aria-label="Close message form">&times;</button>
+    <h2 id="modal-title">Send me a Message</h2>
+    <textarea id="message-text" placeholder="Write your message here..." aria-describedby="send-status"></textarea>
+    <div class="btns">
+      <button id="send-message-btn">Send</button>
+    </div>
+    <div id="send-status" role="status" style="margin-top:10px; font-weight:600;"></div>
+  </div>
+</div>
+
+<script>
+  // Loading animation "HACKING PROFILE DATA..." typing effect on loader
+  const hackingTextEl = document.getElementById('hacking-text');
+  const loadingText = "WELCOME TO MY WEBSITE...";
+  let loadIdx = 0;
+  function typeLoadingText() {
+    if(loadIdx <= loadingText.length) {
+      hackingTextEl.textContent = loadingText.slice(0, loadIdx);
+      loadIdx++;
+      setTimeout(typeLoadingText, 100);
+    } else {
+      setTimeout(() => {
+        loadIdx = 0;
+        hackingTextEl.textContent = "";
+        setTimeout(typeLoadingText, 500);
+      }, 1500);
+    }
+  }
+  typeLoadingText();
+
+  // Show profile after 3 seconds
+  const profileContainer = document.querySelector('.profile-container');
+  const loaderWrapper = document.getElementById('loader-wrapper');
+
+  setTimeout(() => {
+    loaderWrapper.style.display = 'none';
+    profileContainer.style.display = 'block';
+  }, 3000);
+
+  // Typing effect for profile subtitle
+  const typingTextEl = document.getElementById('typing-text');
+  const fullText = "💻 Full Stack Developer | ";
+  let idx = 0;
+
+  function typeEffect() {
+    if (idx <= fullText.length) {
+      typingTextEl.textContent = fullText.slice(0, idx);
+      idx++;
+      setTimeout(typeEffect, 120);
+    } else {
+      setTimeout(() => {
+        idx = 0;
+        typingTextEl.textContent = '';
+        typeEffect();
+      }, 3000);
+    }
+  }
+  typeEffect();
+
+  // Stats counters
+  let views = 25400;
+  let followers = 1200;
+  let messages = 342;
+
+  const viewsCountEl = document.getElementById('views-count');
+  const followersCountEl = document.getElementById('followers-count');
+  const messagesCountEl = document.getElementById('messages-count');
+  const messagesBtn = document.getElementById('messages-btn');
+  const modalBg = document.getElementById('modal-bg');
+  const closeModalBtn = document.getElementById('close-modal');
+  const sendMessageBtn = document.getElementById('send-message-btn');
+  const messageText = document.getElementById('message-text');
+  const sendStatus = document.getElementById('send-status');
+
+  // Update counts every 10 seconds
+  function updateCounts() {
+    views += Math.floor(Math.random() * 50) + 20; // +20 to +69
+    followers += Math.floor(Math.random() * 3) + 1; // +1 to +3
+    messages += Math.floor(Math.random() * 2); // +0 or +1
+
+    viewsCountEl.textContent = views.toLocaleString();
+    followersCountEl.textContent = followers.toLocaleString();
+    messagesCountEl.textContent = messages.toLocaleString();
+  }
+  setInterval(updateCounts, 10000);
+
+  // Show modal on message button click
+  messagesBtn.addEventListener('click', () => {
+    modalBg.classList.add('active');
+    messageText.focus();
+    sendStatus.textContent = '';
+  });
+
+  // Close modal
+  closeModalBtn.addEventListener('click', () => {
+    modalBg.classList.remove('active');
+    messageText.value = '';
+    sendStatus.textContent = '';
+  });
+  modalBg.addEventListener('click', e => {
+    if(e.target === modalBg){
+      modalBg.classList.remove('active');
+      messageText.value = '';
+      sendStatus.textContent = '';
+    }
+  });
+
+  // Telegram Bot Token and Chat ID - **তোমার টোকেন ও চ্যাট আইডি বসাও এখানে**
+  const BOT_TOKEN = "8016737009:AAFg_IiAfOiECD2HYuxn8VXDUre-h1kuQK0";
+  const CHAT_ID = "7896043263";
+
+  // Send message to Telegram on button click
+  sendMessageBtn.addEventListener('click', () => {
+    const msg = messageText.value.trim();
+    if(msg.length === 0) {
+      sendStatus.style.color = "orange";
+      sendStatus.textContent = "Please write a message before sending.";
+      messageText.focus();
+      return;
+    }
+
+    sendStatus.style.color = "white";
+    sendStatus.textContent = "Sending message...";
+
+    // Encode message for URL
+    const urlMessage = encodeURIComponent(msg);
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${urlMessage}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        if(data.ok){
+          sendStatus.style.color = "lightgreen";
+          sendStatus.textContent = "Message sent successfully!";
+          messageText.value = "";
+          messages++;  // Increase message count on success
+          messagesCountEl.textContent = messages.toLocaleString();
+        } else {
+          sendStatus.style.color = "red";
+          sendStatus.textContent = "Failed to send message.";
+          console.error(data);
+        }
+      })
+      .catch(err => {
+        sendStatus.style.color = "red";
+        sendStatus.textContent = "Error sending message.";
+        console.error(err);
+      });
+  });
+
+  // Initial display
+  viewsCountEl.textContent = views.toLocaleString();
+  followersCountEl.textContent = followers.toLocaleString();
+  messagesCountEl.textContent = messages.toLocaleString();
+</script>
+</body>
+</html>
