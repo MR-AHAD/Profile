@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLACK-CODER-404</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #00ff00;
+      font-family: 'Share Tech Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      overflow-x: hidden;
+    }
+
+    main.container {
+      background: linear-gradient(145deg, #001a00, #003300);
+      border-radius: 25px;
+      padding: 40px 30px;
+      width: 480px;
+      box-shadow: 0 0 40px #00ff00cc inset;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+
+    main.container.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .profile-pic-wrapper {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 30px;
+    }
+
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .ring1 { width: 150px; height: 150px; border-top-color: #39FF14; animation: spinCW 8s linear infinite; }
+    .ring2 { width: 165px; height: 165px; border-right-color: #1E90FF; animation: spinCCW 11s linear infinite; }
+    .ring3 { width: 180px; height: 180px; border-bottom-color: #FF4500; animation: spinCW 14s linear infinite; }
+    .ring4 { width: 195px; height: 195px; border-left-color: #FFD700; animation: spinCCW 17s linear infinite; }
+    .ring5 { width: 210px; height: 210px; border-top-color: #00FFFF; animation: spinCW 22s linear infinite; }
+    .ring6 { width: 225px; height: 225px; border-right-color: #FF69B4; animation: spinCCW 26s linear infinite; }
+
+    @keyframes spinCW {
+      0% { transform: translate(-50%, -50%) rotate(0deg);}
+      100% { transform: translate(-50%, -50%) rotate(360deg);}
+    }
+    @keyframes spinCCW {
+      0% { transform: translate(-50%, -50%) rotate(0deg);}
+      100% { transform: translate(-50%, -50%) rotate(-360deg);}
+    }
+
+    .profile-pic {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 0 14px #00ff0099;
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 14px #00ff0099; }
+      50% { box-shadow: 0 0 22px #00ff00dd; }
+    }
+
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 20px #39FF14;
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+
+    p.bio {
+      font-size: 16px;
+      font-style: italic;
+      opacity: 0.9;
+      margin-bottom: 30px;
+      color: #80ff80;
+      text-shadow: 0 0 6px #33ff33bb;
+    }
+
+    section.skills {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+
+    .skill {
+      margin-bottom: 25px;
+    }
+
+    .skill-title {
+      font-size: 18px;
+      color: #aaffaa;
+      text-shadow: 0 0 6px #00ff00cc;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .skill-desc {
+      font-size: 12px;
+      color: #44ff44cc;
+      margin-bottom: 6px;
+      font-style: italic;
+      padding-left: 8px;
+      border-left: 3px solid #22cc22;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .skill-bar-bg {
+      background: #003300;
+      border-radius: 14px;
+      height: 22px;
+      box-shadow: inset 0 0 15px #004400;
+      position: relative;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      width: 0;
+      border-radius: 14px 0 0 14px;
+      background: linear-gradient(90deg, #39ff14, #007700);
+      animation: fillSkill 3.8s ease forwards;
+    }
+
+    .perc-85 { background: linear-gradient(90deg, #3399ff, #0055aa); }
+    .perc-90 { background: linear-gradient(90deg, #ff9933, #aa6600); }
+    .perc-88 { background: linear-gradient(90deg, #ff33aa, #aa0077); }
+
+    .skill-percent {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: #bfff00;
+      font-weight: 700;
+      font-family: 'Share Tech Mono', monospace;
+      text-shadow: 0 0 6px #00ff00cc;
+    }
+
+    @keyframes fillSkill {
+      to { width: var(--fill); }
+    }
+
+    /* Buttons Section */
+    section.buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      flex: 1;
+      background: linear-gradient(135deg, #004400, #006600);
+      border: 1.5px solid #00ff00;
+      color: #00ff00;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 8px 0;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: 0.35s ease;
+      box-shadow: 0 0 8px #00ff0055, inset 0 0 6px #00ff0044;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      min-width: 90px;
+      max-width: 100px;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1.5px;
+      user-select: none;
+    }
+
+    button .btn-icon {
+      font-size: 18px;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #00ff00, #009900);
+      color: #001100;
+      box-shadow: 0 0 16px #00ff00aa, inset 0 0 10px #00ff00aa;
+      transform: scale(1.08);
+    }
+
+    .count-display {
+      font-size: 14px;
+      font-weight: 800;
+      text-shadow: 0 0 8px #00ff0055;
+      min-width: 30px;
+    }
+
+    /* Button Icon Animations */
+    .like-icon.animate {
+      animation: likePulse 0.5s ease forwards;
+      color: #ff4444;
+    }
+
+    @keyframes likePulse {
+      0%, 100% { transform: scale(1); color: #00ff00; }
+      50% { transform: scale(1.6); color: #ff4444; }
+    }
+
+    .view-icon.animate {
+      animation: viewBlink 1.2s ease infinite;
+    }
+
+    @keyframes viewBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .follow-icon.animate {
+      animation: followJump 0.5s ease forwards;
+    }
+
+    @keyframes followJump {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+
+    /* ===== LOADER STYLE ===== */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #001200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: #39ff14;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 20px;
+      letter-spacing: 2px;
+      z-index: 99999;
+      user-select: none;
+    }
+
+    .progress-bar {
+      width: 350px;
+      height: 14px;
+      border-radius: 8px;
+      background: #003300;
+      box-shadow: inset 0 0 8px #007700cc;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #39ff14, #007700);
+      box-shadow: 0 0 10px #00ff00aa;
+      border-radius: 8px 0 0 8px;
+      transition: width 0.3s ease;
+    }
+
+    #progress-percent {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #00ff00;
+      text-shadow: 0 0 6px #39ff14;
+    }
+
+    /* ===== THREEDOT MENU ===== */
+    .menu-container {
+      position: fixed; /* ফিক্সড কর্নারে রাখতে */
+      top: 12px;
+      right: 12px;
+      z-index: 100000;
+      user-select: none;
+      background: transparent; /* ব্যাকগ্রাউন্ড পুরোপুরি রিমুভ */
+      padding: 0;
+    }
+
+    .menu-btn {
+      width: 20px;
+      height: 20px;
+      padding: 3px 0;
+      cursor: pointer;
+      filter: drop-shadow(0 0 3px #00ff00cc);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .menu-btn span {
+      width: 5px;
+      height: 5px;
+      background: #00ff00cc; /* হালকা গ্লো */
+      border-radius: 50%;
+      box-shadow:
+        0 0 6px #00ff00aa,
+        0 0 10px #39ff14aa;
+    }
+
+    /* Dropdown মেনু ব্যাকগ্রাউন্ড রিমুভ করে একদম মিসিং রাখা */
+    .menu-dropdown {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      background: transparent !important;
+      box-shadow: none !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+      margin-top: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      font-weight: 700;
+      font-size: 16px;
+      color: #aaffaa;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 6px #00ff00cc;
+      z-index: 101;
+    }
+
+    .menu-dropdown.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .menu-item {
+      padding: 6px 12px;
+      color: #00ff00;
+      text-shadow:
+        0 0 6px #00ff00,
+        0 0 12px #39ff14;
+      cursor: pointer;
+      user-select: none;
+      display: block;
+      white-space: nowrap;
+    }
+
+    .menu-item:hover,
+    .menu-item:focus {
+      color: #aaffaa;
+      text-shadow:
+        0 0 10px #aaffaa,
+        0 0 20px #ccffcc;
+      background: transparent;
+      outline: none;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader" role="alert" aria-live="assertive" aria-label="Loading progress">
+    LOADING...
+    <div class="progress-bar" aria-hidden="true">
+      <div class="progress-bar-fill"></div>
+    </div>
+    <div id="progress-percent" aria-hidden="true">0%</div>
+  </div>
+
+  <!-- Three Dot Menu -->
+  <div class="menu-container">
+    <button id="menuBtn" class="menu-btn" aria-haspopup="true" aria-expanded="false" aria-label="Open menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div id="menuDropdown" class="menu-dropdown" role="menu" aria-label="Quick navigation menu" tabindex="-1">
+      <div class="menu-item" role="menuitem" tabindex="0" data-url="https://wa.me/01839820328">WhatsApp</div>
+      <div class="menu-item" role="menuitem" tabindex="0" data-url="https://www.facebook.com/404.BLACK.ARMY/">Facebook</div>
+      <div class="menu-item" role="menuitem" tabindex="0" data-url="https://telegram.org/">Telegram</div>
+      <div class="menu-item" role="menuitem" tabindex="0" data-url="https://yourwebsite.com/">Website</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container" aria-hidden="true" tabindex="-1">
+    <div class="profile-pic-wrapper" aria-label="Profile picture with rotating rings">
+      <div class="ring ring1"></div>
+      <div class="ring ring2"></div>
+      <div class="ring ring3"></div>
+      <div class="ring ring4"></div>
+      <div class="ring ring5"></div>
+      <div class="ring ring6"></div>
+      <div class="profile-pic">
+        <img src="https://i.ibb.co/cXKqBBwd/d0d57f3c-9336-4273-979d-43f3078cab73.png" alt="Profile picture of Anonymous_404">
+      </div>
+    </div>
+
+    <h1>BLACK-CODER-404</h1>
+    <p class="bio">Cybersecurity Specialist | Ethical Hacker | Coding</p>
+
+    <section class="skills" aria-label="Skills and proficiencies">
+      <div class="skill">
+        <div class="skill-title">Html Coding</div>
+        <div class="skill-desc">Penetration testing, vulnerability analysis, exploit development</div>
+        <div class="skill-bar-bg" aria-hidden="true">
+          <div class="skill-bar-fill" style="--fill: 87%;"></div>
+          <div class="skill-percent">87%</div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-title">Python Automation</div>
+        <div class="skill-desc">Scripting, bot creation, system automation, data scraping</div>
+        <div class="skill-bar-bg" aria-hidden="true">
+          <div class="skill-bar-fill perc-75" style="--fill: 75%;"></div>
+          <div class="skill-percent">75%</div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-title">Termux Terminal Mastery</div>
+        <div class="skill-desc">Bash scripting, server management, shell utilities</div>
+        <div class="skill-bar-bg" aria-hidden="true">
+          <div class="skill-bar-fill perc-62" style="--fill: 62%;"></div>
+          <div class="skill-percent">62%</div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-title">App Development</div>
+        <div class="skill-desc">Anonymous research, data mining, darknet navigation</div>
+        <div class="skill-bar-bg" aria-hidden="true">
+          <div class="skill-bar-fill perc-74" style="--fill: 74%;"></div>
+          <div class="skill-percent">74%</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="buttons">
+      <button id="likeBtn" aria-pressed="false" aria-label="Like button"><span class="btn-icon like-icon">❤️</span>LIKE <span class="count-display" id="likeCount">0</span></button>
+      <button id="followBtn" aria-pressed="false" aria-label="Follow button"><span class="btn-icon follow-icon">➕</span>FOLLOW <span class="count-display" id="followCount">0</span></button>
+      <button id="viewBtn" aria-pressed="false" aria-label="View button"><span class="btn-icon view-icon">👁️</span>VIEW <span class="count-display" id="viewCount">0</span></button>
+    </section>
+  </main>
+
+  <script>
+    // Loading Bar Logic
+    const loader = document.getElementById('loader');
+    const progressBarFill = loader.querySelector('.progress-bar-fill');
+    const progressPercent = document.getElementById('progress-percent');
+    const mainContainer = document.querySelector('main.container');
+
+    let progress = 0;
+    let loadingInterval;
+
+    function updateProgress() {
+      progress += Math.random() * 10 + 5; // Random increment for dynamic feel
+      if(progress >= 100) {
+        progress = 100;
+        clearInterval(loadingInterval);
+        setTimeout(() => {
+          loader.style.display = 'none';
+          mainContainer.classList.add('visible');
+          mainContainer.setAttribute('aria-hidden', 'false');
+          mainContainer.focus();
+        }, 400);
+      }
+      progressBarFill.style.width = progress + '%';
+      progressPercent.textContent = Math.floor(progress) + '%';
+    }
+
+    // Simulate loading with interval
+    loadingInterval = setInterval(updateProgress, 300);
+
+    // Three Dot Menu Logic
+    const menuBtn = document.getElementById('menuBtn');
+    const menuDropdown = document.getElementById('menuDropdown');
+
+    menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      if(isExpanded) {
+        menuDropdown.classList.remove('show');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        menuDropdown.classList.add('show');
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuDropdown.focus();
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+        menuDropdown.classList.remove('show');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Navigate to URL on menu item click
+    menuDropdown.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const url = item.getAttribute('data-url');
+        if(url) window.open(url, '_blank');
+        menuDropdown.classList.remove('show');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+
+      // Keyboard accessibility for menu items
+      item.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          item.click();
+        }
+      });
+    });
+
+    // Like, Follow, View Buttons Logic
+    const likeBtn = document.getElementById('likeBtn');
+    const followBtn = document.getElementById('followBtn');
+    const viewBtn = document.getElementById('viewBtn');
+    const likeCountEl = document.getElementById('likeCount');
+    const followCountEl = document.getElementById('followCount');
+    const viewCountEl = document.getElementById('viewCount');
+    const likeIcon = likeBtn.querySelector('.like-icon');
+    const followIcon = followBtn.querySelector('.follow-icon');
+    const viewIcon = viewBtn.querySelector('.view-icon');
+
+    let likes = parseInt(localStorage.getItem('likes')) || 0;
+    let follows = parseInt(localStorage.getItem('follows')) || 0;
+    let views = parseInt(localStorage.getItem('views')) || 0;
+
+    likeCountEl.textContent = likes;
+    followCountEl.textContent = follows;
+    viewCountEl.textContent = views;
+
+    likeBtn.addEventListener('click', () => {
+      likes++;
+      localStorage.setItem('likes', likes);
+      likeCountEl.textContent = likes;
+      likeIcon.classList.add('animate');
+      likeBtn.setAttribute('aria-pressed', 'true');
+      setTimeout(() => {
+        likeIcon.classList.remove('animate');
+        likeBtn.setAttribute('aria-pressed', 'false');
+      }, 500);
+    });
+
+    followBtn.addEventListener('click', () => {
+      follows++;
+      localStorage.setItem('follows', follows);
+      followCountEl.textContent = follows;
+      followIcon.classList.add('animate');
+      followBtn.setAttribute('aria-pressed', 'true');
+      setTimeout(() => {
+        followIcon.classList.remove('animate');
+        followBtn.setAttribute('aria-pressed', 'false');
+      }, 500);
+    });
+
+    viewBtn.addEventListener('click', () => {
+      views++;
+      localStorage.setItem('views', views);
+      viewCountEl.textContent = views;
+      viewIcon.classList.add('animate');
+      viewBtn.setAttribute('aria-pressed', 'true');
+      setTimeout(() => {
+        viewIcon.classList.remove('animate');
+        viewBtn.setAttribute('aria-pressed', 'false');
+      }, 1100);
+    });
+
+    window.addEventListener('load', () => {
+      views++;
+      localStorage.setItem('views', views);
+      viewCountEl.textContent = views;
+      viewIcon.classList.add('animate');
+      setTimeout(() => viewIcon.classList.remove('animate'), 1100);
+    });
+
+    // Disable access without internet connection
+    function checkOnlineStatus() {
+      if (!navigator.onLine) {
+        alert("Internet connection is required to access this page. Please connect and reload.");
+        // Optionally redirect or block content
+        location.reload();
+      }
+    }
+
+    window.addEventListener('load', checkOnlineStatus);
+    window.addEventListener('online', () => location.reload());
+  </script>
+
+</body>
+</html>
